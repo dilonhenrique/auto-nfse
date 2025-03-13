@@ -23,10 +23,25 @@ export async function emitNf(user: User, data: NFData) {
   // await page.goto("https://www.nfse.gov.br/EmissorNacional/DPS/Pessoas");
 
   await page.type("input[name=DataCompetencia]", data.reference.string);
-  await new Promise((resolve) => setTimeout(resolve, 100));
   // await page.click("body");
 
-  await page.click("input[name=Tomador.LocalDomicilio][value='1']");
+  await page.click(
+    "label:has(input[name='Tomador.LocalDomicilio'][value='1'])"
+  );
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  await page.click(
+    "label:has(input[name='Tomador.LocalDomicilio'][value='1'])"
+  );
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  await page.click(
+    "label:has(input[name='Tomador.LocalDomicilio'][value='1'])"
+  );
+
+  const el = await page.waitForSelector("input[name='Tomador.Inscricao']");
+
+  await page.type("input[name='Tomador.Inscricao']", data.cnpj);
+
+  await page.click("button#btn_Tomador_Inscricao_pesquisar");
 
   // Alternativa para `waitForTimeout` -> usar setTimeout
   await new Promise((resolve) => setTimeout(resolve, 5000));
