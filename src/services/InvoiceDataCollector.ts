@@ -1,5 +1,6 @@
 import { CliPrompt } from "../cli/CliPrompt";
 import { InvoiceData, ReferenceDate } from "../types/types";
+import { getLastMonth } from "../utils/getLastMonth";
 import { parseDate } from "../utils/parse/date";
 import { parseDecimal } from "../utils/parse/decimal";
 import { isValidCNPJ } from "../utils/validation/cnpj";
@@ -17,7 +18,7 @@ export class InvoiceDataCollector {
   private readonly defaultValues: Record<keyof InvoiceData, string> = {
     cnpj: "36.396.246/0001-71",
     value: "12.992,53",
-    reference: "12/02/2025",
+    reference: getLastMonth().toLocaleDateString(),
     pix: "009.553.790-24",
     tribNac: "01.06.01",
     nbs: "115011000",

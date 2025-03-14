@@ -1,6 +1,7 @@
 import { InvoiceEmitter } from "./services/InvoiceEmitter";
 import { InvoiceDataCollector } from "./services/InvoiceDataCollector";
 import { User } from "./services/User";
+import { TerminalFormatter } from "./services/TerminalFormatter";
 
 const main = async () => {
   const user = new User();
@@ -9,7 +10,16 @@ const main = async () => {
 
   const invoice = await new InvoiceEmitter(user).init();
   const resume = await invoice.generate(invoiceData);
-  console.log(resume);
+
+  const approved = await TerminalFormatter.display(resume);
+
+  if (approved) {
+    console.log("Depois eu emito...");
+  } else {
+    console.log("Eu nem queria mesmo...");
+  }
+
+  process.exit(1);
 };
 
 /**

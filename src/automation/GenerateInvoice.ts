@@ -1,6 +1,6 @@
 import { Page } from "puppeteer";
 import { User } from "../services/User";
-import { createDescription } from "../utils/parse/createDescription";
+import { createDescription } from "../utils/createDescription";
 import { parseCurrency } from "../utils/parse/currency";
 import { InvoiceData } from "../types/types";
 
@@ -147,7 +147,7 @@ export class GenerateInvoice {
     });
 
     if (resume) {
-      console.log("Nota fiscal preparada!");
+      console.log("Nota fiscal preparada!\n");
     } else {
       throw new Error("Erro ao gerar resumo da Nota fiscal");
     }
