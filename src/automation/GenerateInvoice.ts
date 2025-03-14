@@ -73,7 +73,7 @@ export class GenerateInvoice {
     await this.selectDropdown(
       "span[role=combobox][aria-labelledby='select2-LocalPrestacao_CodigoMunicipioPrestacao-container']",
       "input[aria-controls='select2-LocalPrestacao_CodigoMunicipioPrestacao-results']",
-      "Florianópolis"
+      this.data.city
     );
 
     await this.selectDropdown(

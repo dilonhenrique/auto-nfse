@@ -10,4 +10,5 @@ export interface InvoiceData {
   cnpj: string;
   tribNac: string;
   nbs: string;
+  city: string;
 }
