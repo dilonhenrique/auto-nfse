@@ -5,6 +5,7 @@ import { isValidCNPJ } from "../utils/validation/cnpj";
 import { isValidDateFormat } from "../utils/validation/date";
 import { isValidDecimal } from "../utils/validation/decimal";
 import { isValidNumber } from "../utils/validation/number";
+import { isTribNac } from "../utils/validation/tribNac";
 import { askQuestion } from "./question";
 import { rl } from "./questionPromise";
 
@@ -34,7 +35,7 @@ const defaultValues: Record<keyof NFData, string> = {
   value: "12.992,53",
   reference: "12/02/2025",
   pix: "009.553.790-24",
-  tribNac: "010601",
+  tribNac: "01.06.01",
   nbs: "115011000",
 };
 
@@ -72,8 +73,8 @@ export async function getNfData(user: User): Promise<NFData> {
   // );
 
   // const tribNac = await askQuestion(
-  //   "Qual o código de tributação nacional? (somente números)",
-  //   { validation: isValidNumber, defaultValue: defaultValues.tribNac }
+  //   "Qual o código de tributação nacional? (00.00.00)",
+  //   { validation: isTribNac, defaultValue: defaultValues.tribNac }
   // );
 
   // const nbs = await askQuestion("Qual o código Nbs? (somente números)", {

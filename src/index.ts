@@ -1,5 +1,5 @@
 import { getUser } from "./user";
-import { emitNf } from "./emit-nf";
+import { EmitNf } from "./emit-nf";
 import { getNfData } from "./input";
 
 const main = async () => {
@@ -7,7 +7,8 @@ const main = async () => {
 
   const data = await getNfData(user);
 
-  await emitNf(user, data);
+  const brief = await new EmitNf(user, data).execute();
+  console.log(brief);
 };
 
 main();
