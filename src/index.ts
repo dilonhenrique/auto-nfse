@@ -1,15 +1,23 @@
-import { getUser } from "./user";
-import { EmitNf } from "./emit-nf";
-import { getNfData } from "./input";
+import { InvoiceEmitter } from "./services/InvoiceEmitter";
+import { InvoiceDataCollector } from "./services/InvoiceDataCollector";
+import { User } from "./services/User";
 
 const main = async () => {
-  const user = getUser();
+  const user = new User();
 
-  const data = await getNfData(user);
+  const invoiceData = await new InvoiceDataCollector(user).collect();
 
-  const brief = await new EmitNf(user, data).execute();
-  console.log(brief);
+  const invoice = await new InvoiceEmitter(user).init();
+  const resume = await invoice.generate(invoiceData);
+  console.log(resume);
 };
+
+/**
+ * TODO:
+ * logs durante emissao nf
+ * validacao no final
+ * refatoracao em classes
+ */
 
 main();
 
