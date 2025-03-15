@@ -1,7 +1,7 @@
 import { CliPrompt } from "../cli/CliPrompt";
 import { validateApproval } from "../utils/validation/approval";
 
-export class TerminalFormatter {
+export class InvoiceDataFormatter {
   static async display(data: Record<string, string>[]): Promise<boolean> {
     data.forEach((section) => {
       Object.entries(section).forEach(([key, value]) => {

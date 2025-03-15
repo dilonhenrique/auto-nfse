@@ -30,6 +30,8 @@ export class GenerateInvoice {
   }
 
   public async execute() {
+    console.log("Iniciando criação da Nota fiscal...");
+
     await this.login();
     await this.fillInitialForm();
     await this.selectOptions();
