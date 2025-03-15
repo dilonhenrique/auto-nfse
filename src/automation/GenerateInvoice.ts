@@ -30,7 +30,7 @@ export class GenerateInvoice {
   }
 
   public async execute() {
-    console.log("Iniciando criação da Nota fiscal...");
+    console.log("\nIniciando criação da Nota fiscal...");
 
     await this.login();
     await this.fillInitialForm();
@@ -45,7 +45,7 @@ export class GenerateInvoice {
     await this.page.type("input[name=Senha]", this.user.password);
 
     await this.clickSubmit();
-    console.log("\nLogin efetuado");
+    console.log("Login efetuado");
   }
 
   private async fillInitialForm() {

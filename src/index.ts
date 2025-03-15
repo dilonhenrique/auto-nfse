@@ -15,14 +15,12 @@ const main = async () => {
   const approved = await InvoiceDataFormatter.display(resume);
 
   if (approved) {
-    console.log("Pulando emissão...");
+    // const url = await invoice.emitAndDownload();
+    const url = await invoice.downloadLastInvoice();
+    console.log(url);
 
     const invoiceEmailer = new InvoiceEmail();
-    const sent = await invoiceEmailer.sendNf("dilonhenrique@gmail.com", resume);
-
-    if (sent) {
-      console.log("Email enviado!");
-    }
+    await invoiceEmailer.sendNf("dilonhenrique@gmail.com", resume);
   } else {
     console.log("Eu nem queria mesmo...");
   }
