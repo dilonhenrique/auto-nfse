@@ -1,14 +1,14 @@
-import { CliPrompt } from "../adapters/CliPrompt";
-import { InvoiceData, ReferenceDate } from "../types/types";
-import { getLastMonth } from "../utils/getLastMonth";
-import { parseDate } from "../utils/parsers/date";
-import { parseDecimal } from "../utils/parsers/decimal";
-import { isValidCNPJ } from "../utils/validations/cnpj";
-import { isValidDateFormat } from "../utils/validations/date";
-import { isValidDecimal } from "../utils/validations/decimal";
-import { isValidEmail } from "../utils/validations/email";
-import { isValidNbs } from "../utils/validations/nbs";
-import { isTribNac } from "../utils/validations/tribNac";
+import { CliPrompt } from "../../infrastructure/adapters/CliPrompt";
+import { InvoiceData, ReferenceDate } from "../../shared/types/types";
+import { getLastMonth } from "../../shared/utils/getLastMonth";
+import { parseDate } from "../../shared/utils/parsers/date";
+import { parseDecimal } from "../../shared/utils/parsers/decimal";
+import { isValidCNPJ } from "../../shared/utils/validations/cnpj";
+import { isValidDateFormat } from "../../shared/utils/validations/date";
+import { isValidDecimal } from "../../shared/utils/validations/decimal";
+import { isValidEmail } from "../../shared/utils/validations/email";
+import { isValidNbs } from "../../shared/utils/validations/nbs";
+import { isTribNac } from "../../shared/utils/validations/tribNac";
 import { User } from "./User";
 
 export class InvoiceDataCollector {

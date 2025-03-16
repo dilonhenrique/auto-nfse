@@ -6,7 +6,14 @@ export abstract class InvoiceDownloader {
   protected downloadPath: string;
 
   constructor(protected page: Page) {
-    this.downloadPath = path.resolve(__dirname, "..", "..", "..", "downloads");
+    this.downloadPath = path.resolve(
+      __dirname,
+      "..",
+      "..",
+      "..",
+      "..",
+      "downloads"
+    );
     if (!fs.existsSync(this.downloadPath)) {
       fs.mkdirSync(this.downloadPath);
     }

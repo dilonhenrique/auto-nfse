@@ -1,12 +1,12 @@
-import { GenerateInvoice } from "../adapters/rpa/GenerateInvoice";
-import { EmitInvoice } from "../adapters/rpa/EmitInvoice";
-import { DownloadLastInvoice } from "../adapters/rpa/DownloadLastInvoice";
+import { GenerateInvoice } from "../../infrastructure/adapters/rpa/GenerateInvoice";
+import { EmitInvoice } from "../../infrastructure/adapters/rpa/EmitInvoice";
+import { DownloadLastInvoice } from "../../infrastructure/adapters/rpa/DownloadLastInvoice";
 import { InvoiceReviewer } from "./InvoiceReviewer";
 import { User } from "./User";
-import { InvoiceData } from "../types/types";
-import { createDescription } from "../utils/createDescription";
-import { InvoiceAutomation } from "../adapters/InvoiceAutomation";
-import { parseCurrency } from "../utils/parsers/currency";
+import { InvoiceData } from "../../shared/types/types";
+import { createDescription } from "../../shared/utils/createDescription";
+import { InvoiceAutomation } from "../../infrastructure/adapters/InvoiceAutomation";
+import { parseCurrency } from "../../shared/utils/parsers/currency";
 
 export class InvoiceEmitter {
   private automation: InvoiceAutomation;

@@ -1,5 +1,5 @@
-import { CliPrompt } from "../adapters/CliPrompt";
-import { validateApproval } from "../utils/validations/approval";
+import { CliPrompt } from "../../infrastructure/adapters/CliPrompt";
+import { validateApproval } from "../../shared/utils/validations/approval";
 
 export class InvoiceReviewer {
   constructor(private resume: Record<string, string>[]) {}

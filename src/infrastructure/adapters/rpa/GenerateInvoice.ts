@@ -1,13 +1,13 @@
 import { Page } from "puppeteer";
-import { User } from "../../services/User";
-import { createDescription } from "../../utils/createDescription";
-import { parseCurrency } from "../../utils/parsers/currency";
+import { User } from "../../../application/services/User";
+import { createDescription } from "../../../shared/utils/createDescription";
+import { parseCurrency } from "../../../shared/utils/parsers/currency";
 import {
   GenerateInvoiceData,
   GenerateInvoicePeopleData,
   GenerateInvoiceServiceData,
   InvoiceData,
-} from "../../types/types";
+} from "../../../shared/types/types";
 
 const NF_URL =
   "https://www.nfse.gov.br/EmissorNacional/Login?ReturnUrl=%2fEmissorNacional/DPS/Pessoas";

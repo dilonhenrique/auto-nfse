@@ -1,4 +1,4 @@
-import { InvoiceData } from "../types/types";
+import { InvoiceData } from "../../shared/types/types";
 import { parseCurrency } from "./parsers/currency";
 import { formatDateToMonthYear } from "./parsers/monthYear";
 

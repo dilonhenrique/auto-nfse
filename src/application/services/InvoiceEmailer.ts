@@ -1,7 +1,7 @@
-import { EmailClient } from "../clients/EmailClient";
-import { InvoiceData } from "../types/types";
-import { createDescription } from "../utils/createDescription";
-import { createSubject } from "../utils/createSubject";
+import { EmailClient } from "../../infrastructure/clients/EmailClient";
+import { InvoiceData } from "../../shared/types/types";
+import { createDescription } from "../../shared/utils/createDescription";
+import { createSubject } from "../../shared/utils/createSubject";
 import { User } from "./User";
 
 type InvoiceDataWithUrl = InvoiceData & {

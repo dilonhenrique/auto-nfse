@@ -1,3 +1,9 @@
+export interface UserType {
+  name: string;
+  cnpj: string;
+  password: string;
+}
+
 export interface ReferenceDate {
   string: string;
   date: Date;

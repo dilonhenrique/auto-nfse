@@ -1,6 +1,7 @@
 import { config } from "dotenv";
+import { UserType } from "../../shared/types/types";
 
-export class User {
+export class User implements UserType {
   public readonly name: string;
   public readonly cnpj: string;
   public readonly password: string;
