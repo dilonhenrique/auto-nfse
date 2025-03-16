@@ -25,8 +25,8 @@ export class GenerateInvoice {
   }
 
   private async clickSubmit() {
-    await this.page.click("button[type=submit]");
-    await this.page.waitForNavigation();
+    await this.page.locator("button[type=submit]").click();
+    // await this.page.waitForNavigation();
   }
 
   public async execute() {
@@ -41,28 +41,27 @@ export class GenerateInvoice {
 
   private async login() {
     await this.page.goto(NF_URL, { waitUntil: "load" });
-    await this.page.type("input[name=Inscricao]", this.user.cnpj);
-    await this.page.type("input[name=Senha]", this.user.password);
+    await this.page.locator("input[name=Inscricao]").fill(this.user.cnpj);
+    await this.page.locator("input[name=Senha]").fill(this.user.password);
 
     await this.clickSubmit();
     console.log("✅ Login efetuado");
   }
 
   private async fillInitialForm() {
-    await this.page.type(
-      "input[name=DataCompetencia]",
-      this.data.reference.string
-    );
+    await this.page
+      .locator("input[name=DataCompetencia]")
+      .fill(this.data.reference.string);
     await this.page.locator("form").click();
     await this.waitLoading();
 
-    await this.page.click(
-      "label:has(input[name='Tomador.LocalDomicilio'][value='1'])"
-    );
+    await this.page
+      .locator("label:has(input[name='Tomador.LocalDomicilio'][value='1'])")
+      .click();
     await this.page
       .locator("input[name='Tomador.Inscricao']")
       .fill(this.data.cnpj);
-    await this.page.click("button#btn_Tomador_Inscricao_pesquisar");
+    await this.page.locator("button#btn_Tomador_Inscricao_pesquisar").click();
 
     await this.page.waitForSelector("input#Tomador_Nome");
     await this.waitLoading();
@@ -85,9 +84,11 @@ export class GenerateInvoice {
     );
     await this.waitLoading();
 
-    await this.page.click(
-      "label:has(input[name='ServicoPrestado.HaExportacaoImunidadeNaoIncidencia'][value='0'])"
-    );
+    await this.page
+      .locator(
+        "label:has(input[name='ServicoPrestado.HaExportacaoImunidadeNaoIncidencia'][value='0'])"
+      )
+      .click();
     await this.waitLoading();
   }
 
@@ -107,11 +108,12 @@ export class GenerateInvoice {
 
     console.log("✅ Serviço concluído");
 
-    await this.page.type(
-      "input[name='Valores.ValorServico']",
-      parseCurrency(this.data.value)
-    );
+    await this.page
+      .locator("input[name='Valores.ValorServico']")
+      .fill(parseCurrency(this.data.value));
+
     await this.clickSubmit();
+    await this.page.waitForNavigation();
 
     console.log("✅ Valores concluído");
   }

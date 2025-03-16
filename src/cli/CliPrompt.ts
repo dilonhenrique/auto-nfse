@@ -52,16 +52,17 @@ export class CliPrompt {
 
       if (defaultValue) {
         this.rl.write(defaultValue);
-        readline.moveCursor(process.stdout, -defaultValue.length, 0);
-        readline.emitKeypressEvents(process.stdin, this.rl);
 
-        this.rl.addListener("keypress", (str, key) => {
-          if (key.name !== "enter") {
-            readline.clearLine(process.stdout, 1);
-          } else {
-            this.rl.removeAllListeners();
-          }
-        });
+        // readline.moveCursor(process.stdout, -defaultValue.length, 0);
+        // readline.emitKeypressEvents(process.stdin, this.rl);
+
+        // this.rl.addListener("keypress", (str, key) => {
+        //   if (key.name !== "enter") {
+        //     readline.clearLine(process.stdout, 1);
+        //   } else {
+        //     this.rl.removeAllListeners();
+        //   }
+        // });
       }
     });
   }

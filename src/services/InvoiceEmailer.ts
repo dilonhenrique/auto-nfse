@@ -14,7 +14,7 @@ type Props = {
   invoice: InvoiceDataWithUrl;
 };
 
-export class InvoiceEmail {
+export class InvoiceEmailer {
   private emailClient: EmailClient;
 
   constructor() {

@@ -4,12 +4,13 @@ import { GenerateInvoice } from "../automation/GenerateInvoice";
 import { InvoiceData } from "../types/types";
 import { EmitInvoice } from "../automation/EmitInvoice";
 import { DownloadLastInvoice } from "../automation/DownloadLastInvoice";
+import { InvoiceDataFormatter } from "./TerminalFormatter";
 
 export class InvoiceEmitter {
   private user: User;
   private browser?: Browser;
   private page?: Page;
-  private isGenerated = false;
+  private resume?: Record<string, string>[] | undefined;
 
   constructor(user: User) {
     this.user = user;
@@ -35,17 +36,20 @@ export class InvoiceEmitter {
     if (!this.page) throw new Error("O navegador não foi inicializado.");
 
     const process = new GenerateInvoice(this.page, this.user, data);
-    const resume = await process.execute();
+    this.resume = await process.execute();
 
-    this.isGenerated = true;
+    return this.resume;
+  }
 
-    return resume;
+  public async askForApproval() {
+    if (!this.resume) throw new Error("Nenhuma Nota fiscal para aprovação");
+
+    return await InvoiceDataFormatter.display(this.resume);
   }
 
   public async emitAndDownload() {
     if (!this.page) throw new Error("O navegador não foi inicializado.");
-    if (!this.isGenerated)
-      throw new Error("Você deve gerar a Nota fiscal antes de emitir");
+    if (!this.resume) throw new Error("Nenhuma Nota fiscal para emitir");
 
     const process = new EmitInvoice(this.page);
     return await process.execute();

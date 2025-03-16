@@ -12,20 +12,20 @@ export class DownloadLastInvoice {
     }
   }
 
-  public async init() {
-    const client = await this.page.createCDPSession();
-    await client.send("Page.setDownloadBehavior", {
-      behavior: "allow",
-      downloadPath: this.downloadPath,
-    });
-  }
-
   public async execute() {
     await this.init();
 
     console.log("\nBaixando última Nota fiscal");
 
     return await this.download();
+  }
+
+  private async init() {
+    const client = await this.page.createCDPSession();
+    await client.send("Page.setDownloadBehavior", {
+      behavior: "allow",
+      downloadPath: this.downloadPath,
+    });
   }
 
   private async download() {
