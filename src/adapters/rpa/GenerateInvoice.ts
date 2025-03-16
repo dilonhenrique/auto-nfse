@@ -1,8 +1,8 @@
 import { Page } from "puppeteer";
-import { User } from "../services/User";
-import { createDescription } from "../utils/createDescription";
-import { parseCurrency } from "../utils/parse/currency";
-import { InvoiceData } from "../types/types";
+import { User } from "../../services/User";
+import { createDescription } from "../../utils/createDescription";
+import { parseCurrency } from "../../utils/parsers/currency";
+import { InvoiceData } from "../../types/types";
 
 const NF_URL =
   "https://www.nfse.gov.br/EmissorNacional/Login?ReturnUrl=%2fEmissorNacional/DPS/Pessoas";

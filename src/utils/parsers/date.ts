@@ -1,4 +1,4 @@
-import { isValidDateFormat } from "../validation/date";
+import { isValidDateFormat } from "../validations/date";
 
 export function parseDate(dateStr: string): Date | null {
   if (!isValidDateFormat(dateStr)) return null;

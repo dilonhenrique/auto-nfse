@@ -1,19 +1,21 @@
-import { CliPrompt } from "../cli/CliPrompt";
-import { validateApproval } from "../utils/validation/approval";
+import { CliPrompt } from "../adapters/CliPrompt";
+import { validateApproval } from "../utils/validations/approval";
 
-export class InvoiceDataFormatter {
-  static async display(data: Record<string, string>[]): Promise<boolean> {
+export class InvoiceReviewer {
+  constructor(private resume: Record<string, string>[]) {}
+
+  private display(data: Record<string, string>[]) {
     data.forEach((section) => {
       Object.entries(section).forEach(([key, value]) => {
         console.log(`  \x1b[1m\x1b[36m${key}:\x1b[0m ${value}`);
       });
-      console.log(""); // Espaço entre seções
+      console.log("");
     });
-
-    return await this.askApproval();
   }
 
-  private static async askApproval(): Promise<boolean> {
+  public async askApproval(): Promise<boolean> {
+    this.display(this.resume);
+
     const prompt = new CliPrompt();
     const answer = await prompt.ask("Deseja emitir esta Nota Fiscal? (s/n)", {
       validation: validateApproval,

@@ -1,10 +1,10 @@
 import puppeteer, { Browser, Page } from "puppeteer";
 import { User } from "./User";
-import { GenerateInvoice } from "../automation/GenerateInvoice";
+import { GenerateInvoice } from "../adapters/rpa/GenerateInvoice";
 import { InvoiceData } from "../types/types";
-import { EmitInvoice } from "../automation/EmitInvoice";
-import { DownloadLastInvoice } from "../automation/DownloadLastInvoice";
-import { InvoiceDataFormatter } from "./TerminalFormatter";
+import { EmitInvoice } from "../adapters/rpa/EmitInvoice";
+import { DownloadLastInvoice } from "../adapters/rpa/DownloadLastInvoice";
+import { InvoiceReviewer } from "./InvoiceReviewer";
 
 export class InvoiceEmitter {
   private user: User;
@@ -44,7 +44,7 @@ export class InvoiceEmitter {
   public async askForApproval() {
     if (!this.resume) throw new Error("Nenhuma Nota fiscal para aprovação");
 
-    return await InvoiceDataFormatter.display(this.resume);
+    return await new InvoiceReviewer(this.resume).askApproval();
   }
 
   public async emitAndDownload() {

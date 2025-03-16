@@ -1,4 +1,4 @@
-import { EmailClient } from "../client/EmailClient";
+import { EmailClient } from "../clients/EmailClient";
 import { InvoiceData } from "../types/types";
 import { createDescription } from "../utils/createDescription";
 import { createSubject } from "../utils/createSubject";

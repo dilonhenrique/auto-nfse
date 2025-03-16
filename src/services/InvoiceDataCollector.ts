@@ -1,14 +1,14 @@
-import { CliPrompt } from "../cli/CliPrompt";
+import { CliPrompt } from "../adapters/CliPrompt";
 import { InvoiceData, ReferenceDate } from "../types/types";
 import { getLastMonth } from "../utils/getLastMonth";
-import { parseDate } from "../utils/parse/date";
-import { parseDecimal } from "../utils/parse/decimal";
-import { isValidCNPJ } from "../utils/validation/cnpj";
-import { isValidDateFormat } from "../utils/validation/date";
-import { isValidDecimal } from "../utils/validation/decimal";
-import { isValidEmail } from "../utils/validation/email";
-import { isValidNbs } from "../utils/validation/nbs";
-import { isTribNac } from "../utils/validation/tribNac";
+import { parseDate } from "../utils/parsers/date";
+import { parseDecimal } from "../utils/parsers/decimal";
+import { isValidCNPJ } from "../utils/validations/cnpj";
+import { isValidDateFormat } from "../utils/validations/date";
+import { isValidDecimal } from "../utils/validations/decimal";
+import { isValidEmail } from "../utils/validations/email";
+import { isValidNbs } from "../utils/validations/nbs";
+import { isTribNac } from "../utils/validations/tribNac";
 import { User } from "./User";
 
 export class InvoiceDataCollector {
