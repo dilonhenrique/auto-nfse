@@ -1,68 +1,64 @@
-import puppeteer, { Browser, Page } from "puppeteer";
-import { User } from "./User";
 import { GenerateInvoice } from "../adapters/rpa/GenerateInvoice";
-import { InvoiceData } from "../types/types";
 import { EmitInvoice } from "../adapters/rpa/EmitInvoice";
 import { DownloadLastInvoice } from "../adapters/rpa/DownloadLastInvoice";
 import { InvoiceReviewer } from "./InvoiceReviewer";
+import { User } from "./User";
+import { InvoiceData } from "../types/types";
+import { createDescription } from "../utils/createDescription";
+import { InvoiceAutomation } from "../adapters/InvoiceAutomation";
+import { parseCurrency } from "../utils/parsers/currency";
 
 export class InvoiceEmitter {
+  private automation: InvoiceAutomation;
   private user: User;
-  private browser?: Browser;
-  private page?: Page;
-  private resume?: Record<string, string>[] | undefined;
+  private resume?: Record<string, string>[];
 
   constructor(user: User) {
     this.user = user;
+    this.automation = new InvoiceAutomation();
   }
 
   public async init() {
-    this.browser = await puppeteer.launch({
-      headless: true,
-      defaultViewport: null,
-      args: [
-        `--disable-blink-features=AutomationControlled`,
-        `--disable-popup-blocking`,
-        `--disable-default-apps`,
-        `--disable-extensions`,
-      ],
-    });
-    this.page = await this.browser.newPage();
-
+    await this.automation.init();
     return this;
   }
 
   public async generate(data: InvoiceData) {
-    if (!this.page) throw new Error("O navegador não foi inicializado.");
+    const page = this.automation.getPage();
 
-    const process = new GenerateInvoice(this.page, this.user, data);
-    this.resume = await process.execute();
+    const process = new GenerateInvoice(page, this.user);
 
-    return this.resume;
+    this.resume = await process.execute({
+      people: {
+        reference: data.reference.string,
+        cnpj: data.cnpj,
+      },
+      service: {
+        city: data.city,
+        description: createDescription(data),
+        tribNac: data.tribNac,
+        nbs: data.nbs,
+      },
+      value: parseCurrency(data.value),
+    });
   }
 
-  public async askForApproval() {
+  public async askForApproval(): Promise<boolean> {
     if (!this.resume) throw new Error("Nenhuma Nota fiscal para aprovação");
-
-    return await new InvoiceReviewer(this.resume).askApproval();
+    return new InvoiceReviewer(this.resume).askApproval();
   }
 
   public async emitAndDownload() {
-    if (!this.page) throw new Error("O navegador não foi inicializado.");
+    const page = this.automation.getPage();
     if (!this.resume) throw new Error("Nenhuma Nota fiscal para emitir");
 
-    const process = new EmitInvoice(this.page);
+    const process = new EmitInvoice(page);
     return await process.execute();
   }
 
   public async downloadLastInvoice() {
-    if (!this.page) throw new Error("O navegador não foi inicializado.");
-
-    const process = new DownloadLastInvoice(this.page);
-    return await process.execute();
-  }
-
-  public async close() {
-    await this.browser?.close();
+    const page = this.automation.getPage();
+    const process = new DownloadLastInvoice(page);
+    await process.execute();
   }
 }

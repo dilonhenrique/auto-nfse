@@ -8,13 +8,13 @@ const main = async () => {
 
   const invoiceData = await new InvoiceDataCollector(user).collect();
 
-  const invoice = await new InvoiceEmitter(user).init();
-  await invoice.generate(invoiceData);
+  const emitter = await new InvoiceEmitter(user).init();
+  await emitter.generate(invoiceData);
 
-  const approved = await invoice.askForApproval();
+  const approved = await emitter.askForApproval();
 
   if (approved) {
-    const url = await invoice.emitAndDownload();
+    const url = await emitter.emitAndDownload();
 
     const mailer = new InvoiceEmailer();
     await mailer.sendNf({

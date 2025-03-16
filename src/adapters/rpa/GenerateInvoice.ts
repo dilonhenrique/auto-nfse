@@ -2,17 +2,18 @@ import { Page } from "puppeteer";
 import { User } from "../../services/User";
 import { createDescription } from "../../utils/createDescription";
 import { parseCurrency } from "../../utils/parsers/currency";
-import { InvoiceData } from "../../types/types";
+import {
+  GenerateInvoiceData,
+  GenerateInvoicePeopleData,
+  GenerateInvoiceServiceData,
+  InvoiceData,
+} from "../../types/types";
 
 const NF_URL =
   "https://www.nfse.gov.br/EmissorNacional/Login?ReturnUrl=%2fEmissorNacional/DPS/Pessoas";
 
 export class GenerateInvoice {
-  constructor(
-    private page: Page,
-    private user: User,
-    private data: InvoiceData
-  ) {}
+  constructor(private page: Page, private user: User) {}
 
   private async waitLoading() {
     await this.page.waitForFunction(() => {
@@ -29,13 +30,13 @@ export class GenerateInvoice {
     // await this.page.waitForNavigation();
   }
 
-  public async execute() {
+  public async execute(data: GenerateInvoiceData) {
     console.log("\nIniciando criação da Nota fiscal...");
 
     await this.login();
-    await this.fillInitialForm();
-    await this.selectOptions();
-    await this.fillServiceDetails();
+    await this.fillPeopleForm(data.people);
+    await this.fillServiceForm(data.service);
+    await this.fillValue(data.value);
     return await this.finish();
   }
 
@@ -48,19 +49,15 @@ export class GenerateInvoice {
     console.log("✅ Login efetuado");
   }
 
-  private async fillInitialForm() {
-    await this.page
-      .locator("input[name=DataCompetencia]")
-      .fill(this.data.reference.string);
+  private async fillPeopleForm(data: GenerateInvoicePeopleData) {
+    await this.page.locator("input[name=DataCompetencia]").fill(data.reference);
     await this.page.locator("form").click();
     await this.waitLoading();
 
     await this.page
       .locator("label:has(input[name='Tomador.LocalDomicilio'][value='1'])")
       .click();
-    await this.page
-      .locator("input[name='Tomador.Inscricao']")
-      .fill(this.data.cnpj);
+    await this.page.locator("input[name='Tomador.Inscricao']").fill(data.cnpj);
     await this.page.locator("button#btn_Tomador_Inscricao_pesquisar").click();
 
     await this.page.waitForSelector("input#Tomador_Nome");
@@ -70,17 +67,22 @@ export class GenerateInvoice {
     console.log("✅ Pessoas concluído");
   }
 
-  private async selectOptions() {
+  private async fillServiceForm(data: GenerateInvoiceServiceData) {
+    await this.selectOptions(data);
+    await this.fillServiceDetails(data);
+  }
+
+  private async selectOptions(data: GenerateInvoiceServiceData) {
     await this.selectDropdown(
       "span[role=combobox][aria-labelledby='select2-LocalPrestacao_CodigoMunicipioPrestacao-container']",
       "input[aria-controls='select2-LocalPrestacao_CodigoMunicipioPrestacao-results']",
-      this.data.city
+      data.city
     );
 
     await this.selectDropdown(
       "span[role=combobox][aria-labelledby='select2-ServicoPrestado_CodigoTributacaoNacional-container']",
       "input[aria-controls='select2-ServicoPrestado_CodigoTributacaoNacional-results']",
-      this.data.tribNac
+      data.tribNac
     );
     await this.waitLoading();
 
@@ -92,25 +94,24 @@ export class GenerateInvoice {
     await this.waitLoading();
   }
 
-  private async fillServiceDetails() {
-    const description = createDescription(this.data);
+  private async fillServiceDetails(data: GenerateInvoiceServiceData) {
     await this.page
       .locator("textarea[name='ServicoPrestado.Descricao']")
-      .fill(description);
+      .fill(data.description);
 
     await this.selectDropdown(
       "#ServicoPrestado_CodigoNBS_chosen a.chosen-single",
       "#ServicoPrestado_CodigoNBS_chosen .chosen-search > input",
-      this.data.nbs
+      data.nbs
     );
 
     await this.clickSubmit();
 
     console.log("✅ Serviço concluído");
+  }
 
-    await this.page
-      .locator("input[name='Valores.ValorServico']")
-      .fill(parseCurrency(this.data.value));
+  private async fillValue(value: string) {
+    await this.page.locator("input[name='Valores.ValorServico']").fill(value);
 
     await this.clickSubmit();
     await this.page.waitForNavigation();
