@@ -1,4 +1,12 @@
 import nodemailer from "nodemailer";
+import { Attachment } from "nodemailer/lib/mailer";
+
+type SendEmailProps = {
+  to: string;
+  subject: string;
+  body: string;
+  attachments?: Attachment[];
+};
 
 export class EmailClient {
   private transporter: nodemailer.Transporter;
@@ -15,12 +23,12 @@ export class EmailClient {
     });
   }
 
-  async sendEmail(
-    to: string,
-    subject: string,
-    body: string,
-    attachments?: any[]
-  ): Promise<boolean> {
+  async sendEmail({
+    to,
+    body,
+    subject,
+    attachments,
+  }: SendEmailProps): Promise<boolean> {
     try {
       await this.transporter.sendMail({
         from: `"NF Service" <${process.env.EMAIL_FROM}>`,

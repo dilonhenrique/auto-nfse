@@ -1,4 +1,18 @@
 import { EmailClient } from "../client/EmailClient";
+import { InvoiceData } from "../types/types";
+import { createDescription } from "../utils/createDescription";
+import { createSubject } from "../utils/createSubject";
+import { User } from "./User";
+
+type InvoiceDataWithUrl = InvoiceData & {
+  url: string;
+};
+
+type Props = {
+  to: string;
+  user: User;
+  invoice: InvoiceDataWithUrl;
+};
 
 export class InvoiceEmail {
   private emailClient: EmailClient;
@@ -7,14 +21,22 @@ export class InvoiceEmail {
     this.emailClient = new EmailClient();
   }
 
-  async sendNf(
-    to: string,
-    invoice: Record<string, string>[]
-  ): Promise<boolean> {
-    const emailBody = this.formatInvoiceEmail(invoice);
-    const subject = "📄 Sua Nota Fiscal Eletrônica";
+  async sendNf(props: Props): Promise<boolean> {
+    const body = createDescription(props.invoice);
+    const subject = createSubject(props.user, props.invoice);
+    const filename = `${subject}.pdf`;
 
-    return await this.emailClient.sendEmail(to, subject, emailBody);
+    return await this.emailClient.sendEmail({
+      to: props.to,
+      body,
+      subject,
+      attachments: [
+        {
+          filename,
+          path: props.invoice.url,
+        },
+      ],
+    });
   }
 
   private formatInvoiceEmail(nfData: Record<string, string>[]): string {

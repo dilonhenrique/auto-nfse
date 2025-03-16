@@ -17,10 +17,13 @@ const main = async () => {
   if (approved) {
     // const url = await invoice.emitAndDownload();
     const url = await invoice.downloadLastInvoice();
-    console.log(url);
 
     const invoiceEmailer = new InvoiceEmail();
-    await invoiceEmailer.sendNf("dilonhenrique@gmail.com", resume);
+    await invoiceEmailer.sendNf({
+      user,
+      to: "dilonhenrique@gmail.com",
+      invoice: { ...invoiceData, url },
+    });
   } else {
     console.log("Eu nem queria mesmo...");
   }

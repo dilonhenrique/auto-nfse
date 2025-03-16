@@ -45,7 +45,7 @@ export class GenerateInvoice {
     await this.page.type("input[name=Senha]", this.user.password);
 
     await this.clickSubmit();
-    console.log("Login efetuado");
+    console.log("✅ Login efetuado");
   }
 
   private async fillInitialForm() {
@@ -68,7 +68,7 @@ export class GenerateInvoice {
     await this.waitLoading();
 
     await this.clickSubmit();
-    console.log("Pessoas concluído");
+    console.log("✅ Pessoas concluído");
   }
 
   private async selectOptions() {
@@ -105,7 +105,7 @@ export class GenerateInvoice {
 
     await this.clickSubmit();
 
-    console.log("Serviço concluído");
+    console.log("✅ Serviço concluído");
 
     await this.page.type(
       "input[name='Valores.ValorServico']",
@@ -113,7 +113,7 @@ export class GenerateInvoice {
     );
     await this.clickSubmit();
 
-    console.log("Valores concluído");
+    console.log("✅ Valores concluído");
   }
 
   private async selectDropdown(
@@ -149,7 +149,7 @@ export class GenerateInvoice {
     });
 
     if (resume) {
-      console.log("Nota fiscal preparada!\n");
+      console.log("📃 Nota fiscal preparada!\n");
     } else {
       throw new Error("Erro ao gerar resumo da Nota fiscal");
     }
