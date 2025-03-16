@@ -14,8 +14,8 @@ const main = async () => {
   const approved = await emitter.askForApproval();
 
   if (approved) {
-    // const url = await emitter.emitAndDownload();
-    const url = await emitter.downloadLastInvoice();
+    const url = await emitter.emitAndDownload();
+    // const url = await emitter.downloadLastInvoice();
 
     const mailer = new InvoiceEmailer();
     await mailer.sendNf({
