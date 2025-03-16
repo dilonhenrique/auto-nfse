@@ -59,6 +59,6 @@ export class InvoiceEmitter {
   public async downloadLastInvoice() {
     const page = this.automation.getPage();
     const process = new DownloadLastInvoice(page);
-    await process.execute();
+    return await process.execute();
   }
 }
