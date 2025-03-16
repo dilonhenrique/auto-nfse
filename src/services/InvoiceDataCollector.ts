@@ -6,6 +6,7 @@ import { parseDecimal } from "../utils/parse/decimal";
 import { isValidCNPJ } from "../utils/validation/cnpj";
 import { isValidDateFormat } from "../utils/validation/date";
 import { isValidDecimal } from "../utils/validation/decimal";
+import { isValidEmail } from "../utils/validation/email";
 import { isValidNbs } from "../utils/validation/nbs";
 import { isTribNac } from "../utils/validation/tribNac";
 import { User } from "./User";
@@ -23,6 +24,7 @@ export class InvoiceDataCollector {
     tribNac: "01.06.01",
     nbs: "115011000",
     city: "Florianópolis",
+    email: "dilonhenrique@gmail.com",
   };
 
   constructor(user: User) {
@@ -52,6 +54,12 @@ export class InvoiceDataCollector {
       "Qual o CNPJ do tomador? (00.000.000/0000-00)",
       this.defaultValues.cnpj,
       isValidCNPJ
+    );
+
+    this.invoiceData.email = await this.askString(
+      "Qual o email do financeiro?",
+      this.defaultValues.email,
+      isValidEmail
     );
 
     this.invoiceData.city = await this.askString(
@@ -121,6 +129,7 @@ export class InvoiceDataCollector {
       tribNac: this.invoiceData.tribNac as string,
       nbs: this.invoiceData.nbs as string,
       city: this.invoiceData.city as string,
+      email: this.invoiceData.email as string,
     };
   }
 }

@@ -21,7 +21,7 @@ const main = async () => {
     const invoiceEmailer = new InvoiceEmail();
     await invoiceEmailer.sendNf({
       user,
-      to: "dilonhenrique@gmail.com",
+      to: invoiceData.email,
       invoice: { ...invoiceData, url },
     });
   } else {

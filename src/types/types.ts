@@ -11,4 +11,5 @@ export interface InvoiceData {
   tribNac: string;
   nbs: string;
   city: string;
+  email: string;
 }
