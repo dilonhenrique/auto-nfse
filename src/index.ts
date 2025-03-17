@@ -1,6 +1,6 @@
-import { InvoiceEmitter } from "./application/services/InvoiceEmitter";
-import { InvoiceDataCollector } from "./application/services/InvoiceDataCollector";
 import { User } from "./application/services/User";
+import { InvoiceDataCollector } from "./application/services/InvoiceDataCollector";
+import { InvoiceEmitter } from "./application/services/InvoiceEmitter";
 import { InvoiceEmailer } from "./application/services/InvoiceEmailer";
 
 const main = async () => {

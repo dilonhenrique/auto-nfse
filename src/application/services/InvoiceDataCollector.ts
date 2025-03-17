@@ -1,3 +1,4 @@
+import { config } from "dotenv";
 import { CliPrompt } from "../../infrastructure/adapters/CliPrompt";
 import { InvoiceData, ReferenceDate } from "../../shared/types/types";
 import { getLastMonth } from "../../shared/utils/getLastMonth";
@@ -16,20 +17,24 @@ export class InvoiceDataCollector {
   private prompt: CliPrompt;
   private invoiceData: Partial<InvoiceData> = {};
 
-  private readonly defaultValues: Record<keyof InvoiceData, string> = {
-    cnpj: "36.396.246/0001-71",
-    value: "12.992,53",
-    reference: getLastMonth().toLocaleDateString(),
-    pix: "009.553.790-24",
-    tribNac: "01.06.01",
-    nbs: "115011000",
-    city: "Florianópolis",
-    email: "dilonhenrique@gmail.com",
-  };
+  private readonly defaultValues: Record<keyof InvoiceData, string | undefined>;
 
   constructor(user: User) {
     this.user = user;
     this.prompt = new CliPrompt();
+
+    const { parsed } = config();
+
+    this.defaultValues = {
+      reference: getLastMonth().toLocaleDateString(),
+      cnpj: parsed?.INVOICE_DEFAULT_CNPJ,
+      value: parsed?.INVOICE_DEFAULT_VALUE,
+      pix: parsed?.INVOICE_DEFAULT_PIX,
+      tribNac: parsed?.INVOICE_DEFAULT_TRIBNAC,
+      nbs: parsed?.INVOICE_DEFAULT_NBS,
+      city: parsed?.INVOICE_DEFAULT_CITY,
+      email: parsed?.INVOICE_DEFAULT_EMAIL,
+    };
   }
 
   async collect(): Promise<InvoiceData> {
@@ -86,7 +91,7 @@ export class InvoiceDataCollector {
 
   private async askString(
     question: string,
-    defaultValue: string,
+    defaultValue?: string,
     validation?: (val: string) => boolean
   ): Promise<string> {
     return await this.prompt.ask(question, { validation, defaultValue });
@@ -94,7 +99,7 @@ export class InvoiceDataCollector {
 
   private async askNumber(
     question: string,
-    defaultValue: string
+    defaultValue?: string
   ): Promise<string> {
     return await this.prompt.ask(question, {
       validation: isValidDecimal,
@@ -104,7 +109,7 @@ export class InvoiceDataCollector {
 
   private async askDate(
     question: string,
-    defaultValue: string
+    defaultValue?: string
   ): Promise<{ string: string; date: Date }> {
     const referenceStr = await this.prompt.ask(question, {
       validation: isValidDateFormat,

@@ -9,9 +9,9 @@ export class User implements UserType {
   constructor() {
     const { parsed } = config();
 
-    const name = parsed?.NAME;
-    const cnpj = parsed?.CNPJ;
-    const password = parsed?.PASS;
+    const name = parsed?.USER_NAME;
+    const cnpj = parsed?.USER_CNPJ;
+    const password = parsed?.USER_PASS;
 
     if (!name || !cnpj || !password) throw new Error("No User found in .env");
 
